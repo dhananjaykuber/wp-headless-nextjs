@@ -21,6 +21,16 @@ interface RenderedContent {
     protected: boolean;
 }
 
+interface Taxonomy {
+    id: number;
+    count: number;
+    description: string;
+    link: string;
+    name: string;
+    slug: string;
+    meta: Record<string, unknown>;
+}
+
 interface Post extends WPEntity {
     title: RenderedTitle;
     content: RenderedContent;
@@ -47,4 +57,24 @@ interface Post extends WPEntity {
     meta: Record<string, unknown>;
 }
 
-export { Post };
+interface Category extends Taxonomy {
+    taxonomy: 'category';
+    parent: number;
+}
+
+interface Tag extends Taxonomy {
+    taxonomy: 'post_tag';
+}
+
+interface Author {
+    id: number;
+    name: string;
+    url: string;
+    description: string;
+    link: string;
+    slug: string;
+    avatar_urls: Record<string, string>;
+    meta: Record<string, unknown>;
+}
+
+export { Post, Category, Tag, Author };

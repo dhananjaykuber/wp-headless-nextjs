@@ -3,7 +3,7 @@ import querystring from 'query-string';
 
 // Internal dependencies
 import { WPAPIError } from './error';
-import { Post } from './wordpress.d';
+import { Author, Category, Post, Tag } from './wordpress.d';
 
 const baseUrl = process.env.NEXT_PUBLIC_WORDPRESS_SITE_URL;
 
@@ -59,4 +59,54 @@ const getAllPosts = async (filter: {
     return wpFetch<Post[]>(url);
 };
 
-export { getAllPosts };
+// Get a single post by ID
+const getPostById = async (id: string) => {
+    const url = getUrl(`/wp-json/wp/v2/posts/${id}`);
+    return wpFetch<Post>(url);
+};
+
+// Get all categories
+const getAllCategories = async () => {
+    const url = getUrl('/wp-json/wp/v2/categories');
+    return wpFetch<Category[]>(url);
+};
+
+// Get category by ID
+const getCategoryById = async (id: string) => {
+    const url = getUrl(`/wp-json/wp/v2/categories/${id}`);
+    return wpFetch<Category>(url);
+};
+
+// Get all tags
+const getAllTags = async () => {
+    const url = getUrl('/wp-json/wp/v2/tags');
+    return wpFetch<Tag[]>(url);
+};
+
+// Get tag by ID
+const getTagById = async (id: string) => {
+    const url = getUrl(`/wp-json/wp/v2/tags/${id}`);
+    return wpFetch<Tag>(url);
+};
+
+// Get all authors
+const getAllAuthors = async () => {
+    const url = getUrl('/wp-json/wp/v2/users');
+    return wpFetch<Author[]>(url);
+};
+
+const getAuthorById = async (id: string) => {
+    const url = getUrl(`/wp-json/wp/v2/users/${id}`);
+    return wpFetch<Author>(url);
+};
+
+export {
+    getAllPosts,
+    getPostById,
+    getAllCategories,
+    getCategoryById,
+    getAllTags,
+    getTagById,
+    getAllAuthors,
+    getAuthorById,
+};
