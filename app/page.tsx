@@ -93,12 +93,14 @@ const Page = async ({
                         />
                     </div>
 
-                    {paginatedPosts?.length && (
+                    {paginatedPosts?.length ? (
                         <div className='grid md:grid-cols-3 gap-4'>
                             {paginatedPosts.map((post) => (
                                 <PostCard post={post} key={post.id} />
                             ))}
                         </div>
+                    ) : (
+                        <p>No posts found</p>
                     )}
 
                     {totalPages > 1 && (

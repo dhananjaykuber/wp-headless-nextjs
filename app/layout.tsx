@@ -8,6 +8,7 @@ import ThemeProvider from '@/components/themes/theme-provider';
 
 // Styles
 import './globals.css';
+import ThemeToggle from '@/components/theme-toggle';
 
 const inter = Inter({
     variable: '--font-inter',
@@ -38,6 +39,8 @@ export default function RootLayout({
                     <Layout>
                         <Main>{children}</Main>
                     </Layout>
+
+                    <ThemeToggle />
                 </ThemeProvider>
             </body>
         </html>

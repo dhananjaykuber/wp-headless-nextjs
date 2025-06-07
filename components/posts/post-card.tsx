@@ -23,11 +23,11 @@ const PostCard = async ({ post }: { post: Post }) => {
         <Link
             href={`/${post.slug}`}
             className={
-                'border rounded-lg p-4 group flex justify-between flex-col gap-8 hover:bg-accent/50 transition-all'
+                'border rounded-lg p-4 group flex justify-between flex-col gap-8 bg-accent/20 hover:bg-accent/50 transition-all'
             }
         >
             <div className='flex flex-col gap-4'>
-                <div className='h-48 w-full relative overflow-hidden rounded-md border bg-muted flex items-center justify-center'>
+                <div className='h-48 w-full relative overflow-hidden rounded-md border bg-muted '>
                     {featuredImage?.source_url ? (
                         <Image
                             className='w-full h-full object-cover group-hover:scale-105 transition-all'
@@ -35,8 +35,7 @@ const PostCard = async ({ post }: { post: Post }) => {
                             decoding='async'
                             src={featuredImage.source_url}
                             alt={featuredImage.alt_text || post.title.rendered}
-                            width={400}
-                            height={200}
+                            fill
                         />
                     ) : (
                         <div className='flex items-center justify-center w-full h-full text-muted-foreground text-sm'>
