@@ -1,5 +1,10 @@
+// Next.js dependencies
 import Link from 'next/link';
+
+// Internal dependencies
 import { Container, Section } from '@/components/layouts';
+
+// External dependencies
 import { Button } from '@/components/ui/button';
 
 const NotFound = () => {

@@ -7,6 +7,7 @@ import { Layout, Main } from '@/components/layouts';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import ThemeProvider from '@/components/themes/theme-provider';
+import { siteConfig } from '@/site.config';
 
 // Styles
 import './globals.css';
@@ -18,8 +19,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-    title: 'WordPress Headless with Next.js',
-    description: 'A headless WordPress site built with Next.js',
+    title: siteConfig.site_name,
+    description: siteConfig.site_description,
 };
 
 export default function RootLayout({
