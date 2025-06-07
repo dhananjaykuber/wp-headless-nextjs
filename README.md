@@ -48,7 +48,7 @@ In the WordPress admin settings:
 Add to your .env file:
 
 ```env
-envNEXT_PUBLIC_WORDPRESS_SITE_URL=https://your-site-name.local
+NEXT_PUBLIC_WORDPRESS_SITE_URL=https://your-site-name.local
 WEBHOOK_SECRET=your-super-secret-webhook-token-2024
 ```
 
