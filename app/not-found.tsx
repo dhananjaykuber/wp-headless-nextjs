@@ -7,9 +7,7 @@ const NotFound = () => {
         <Section>
             <Container>
                 <div className='flex flex-col items-center justify-center min-h-[55vh] text-center'>
-                    <h1 className='text-5xl font-bold mb-4'>
-                        404 - Page Not Found
-                    </h1>
+                    <h1 className='mb-4'>404 - Page Not Found</h1>
                     <p className='mb-8'>
                         Oops! The page you are looking for does not exist or has
                         been moved.
