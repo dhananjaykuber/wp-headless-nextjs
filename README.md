@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## WordPress + Next.js Headless Blog
 
-## Getting Started
+This is a headless blog website built with Next.js and WordPress as the backend CMS. It fetches data from WordPress REST API and displays posts with pagination, search, and filtering by categories, tags, and authors.
 
-First, run the development server:
+### Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+-   List all blog posts with pagination
+-   Search posts by keywords
+-   Filter posts by categories, tags, and authors
+-   Server-side data fetching for SEO and performance
+-   Responsive design with clean UI components
+
+### Tech Stack
+
+-   Next.js
+-   WordPress REST API (Headless CMS)
+-   TypeScript
+-   Tailwind CSS (for styling)
+-   Shadcn (for UI components)
+
+### Configuration
+
+Create a .env.local file in the root of the project and add your WordPress site URL:
+
+```env
+NEXT_PUBLIC_WORDPRESS_SITE_URL=https://your-site-name.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Screenshots
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+![screencapture-localhost-3003-2025-06-07-17_21_24](https://github.com/user-attachments/assets/9047c40c-d416-4f20-a47b-01b117a2134d)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+![screencapture-localhost-3003-what-is-acf-advanced-custom-fields-2025-06-07-17_21_46](https://github.com/user-attachments/assets/19ebbf68-3331-4fc9-92b7-5241f9afb04f)
