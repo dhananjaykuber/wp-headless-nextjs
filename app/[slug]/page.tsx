@@ -1,6 +1,7 @@
 // Next.js dependencies
 import Image from 'next/image';
 import Link from 'next/link';
+import { Metadata } from 'next';
 
 // Internal dependencies
 import { Article, Container, Section } from '@/components/layouts';
@@ -15,6 +16,7 @@ import {
 // External dependencies
 import Balancer from 'react-wrap-balancer';
 
+// Generate static paths for dynamic routes
 export const generateStaticParams = async () => {
     // Fetch all posts to generate static paths
     const posts = await getAllPosts({});
@@ -22,6 +24,26 @@ export const generateStaticParams = async () => {
     return posts.map((post) => ({
         slug: post.slug,
     }));
+};
+
+// Metadata generation for the page
+export const generateMetadata = async ({
+    params,
+}: {
+    params: Promise<{ slug: string }>;
+}): Promise<Metadata> => {
+    const { slug } = await params;
+
+    const post = await getPostBySlug(slug);
+
+    if (!post) {
+        return {};
+    }
+
+    return {
+        title: post.title?.rendered,
+        description: post.excerpt?.rendered,
+    };
 };
 
 const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
