@@ -1,8 +1,25 @@
 // Internal dependencies
-import { getAllPosts } from '@/lib/wordpress';
+import {
+    getAllAuthors,
+    getAllCategories,
+    getAllPosts,
+    getAllTags,
+} from '@/lib/wordpress';
+import Filter from '@/components/posts/filter';
+import PostCard from '@/components/posts/post-card';
+import { Container, Section } from '@/components/layouts';
 
 // External dependencies
 import { Input } from '@/components/ui/input';
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from '@/components/ui/pagination';
+import Search from '@/components/posts/Search';
 
 const Page = async ({
     searchParams,
@@ -12,32 +29,111 @@ const Page = async ({
         category?: string;
         tag?: string;
         search?: string;
+        page?: string;
     }>;
 }) => {
     const params = await searchParams;
-    const { author, category, tag, search } = params;
+    const { author, category, tag, search, page: pageParam } = params;
 
-    const posts = await getAllPosts({ author, category, tag, search });
+    const [posts, categories, tags, authors] = await Promise.all([
+        getAllPosts({ author, category, tag, search }),
+        getAllCategories(),
+        getAllTags(),
+        getAllAuthors(),
+    ]);
+
+    const page = pageParam ? parseInt(pageParam, 10) : 1;
+    const postsPerPage = 9;
+    const totalPages = Math.ceil(posts.length / postsPerPage);
+    const paginatedPosts = posts.slice(
+        (page - 1) * postsPerPage,
+        page * postsPerPage
+    );
+
+    // Create pagination links
+    const createPaginationLink = (page: number) => {
+        const params = new URLSearchParams();
+        if (page > 1) {
+            params.set('page', page.toString());
+        }
+        if (category) {
+            params.set('category', category);
+        }
+        if (tag) {
+            params.set('tag', tag);
+        }
+        if (author) {
+            params.set('author', author);
+        }
+
+        return `/posts${params.toString() ? `?${params.toString()}` : ''}`;
+    };
 
     return (
-        <section className='py-8 md:py-12'>
-            <div className='max-w-5xl mx-auto sm:p-8'>
-                <h1 className='text-3xl font-medium'>All Posts</h1>
-                <p className='my-6 text-gray-500'>
-                    {posts?.length} posts found
-                </p>
+        <Section>
+            <Container>
+                <div className='space-y-8'>
+                    <div>
+                        <h1 className='text-3xl font-medium'>All Posts</h1>
+                        <p className='my-6 text-gray-500'>
+                            {posts?.length}{' '}
+                            {posts.length === 1 ? 'post' : 'posts'} found
+                            {search && ` for "${search}"`}
+                        </p>
+                    </div>
 
-                <div>
-                    <Input
-                        type='search'
-                        name='search'
-                        placeholder='Search posts...'
-                        defaultValue={search || ''}
-                        className='px-4 py-5'
-                    />
+                    <div className='space-y-4'>
+                        <Search value={search} />
+                        <Filter
+                            categories={categories}
+                            tags={tags}
+                            authors={authors}
+                            selectedCategory={category}
+                            selectedTag={tag}
+                            selectedAuthor={author}
+                        />
+                    </div>
+
+                    {paginatedPosts?.length && (
+                        <div className='grid md:grid-cols-3 gap-4'>
+                            {paginatedPosts.map((post) => (
+                                <PostCard post={post} key={post.id} />
+                            ))}
+                        </div>
+                    )}
+
+                    {totalPages > 1 && (
+                        <Pagination>
+                            <PaginationContent>
+                                <PaginationItem>
+                                    <PaginationPrevious
+                                        className={
+                                            page <= 1
+                                                ? 'pointer-events-none opacity-50'
+                                                : ''
+                                        }
+                                        href={createPaginationLink(page - 1)}
+                                    ></PaginationPrevious>
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationLink>{page}</PaginationLink>
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationNext
+                                        className={
+                                            page >= totalPages
+                                                ? 'pointer-events-none opacity-50'
+                                                : ''
+                                        }
+                                        href={createPaginationLink(page + 1)}
+                                    ></PaginationNext>
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    )}
                 </div>
-            </div>
-        </section>
+            </Container>
+        </Section>
     );
 };
 
