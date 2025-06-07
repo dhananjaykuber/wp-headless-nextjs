@@ -4,6 +4,8 @@ import { Inter } from 'next/font/google';
 
 // Internal dependencies
 import { Layout, Main } from '@/components/layouts';
+import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
 import ThemeProvider from '@/components/themes/theme-provider';
 
 // Styles
@@ -36,11 +38,13 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
+                    <Navbar />
                     <Layout>
                         <Main>{children}</Main>
                     </Layout>
 
                     <ThemeToggle />
+                    <Footer />
                 </ThemeProvider>
             </body>
         </html>
