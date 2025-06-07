@@ -4,6 +4,7 @@ import querystring from 'query-string';
 // Internal dependencies
 import { WPAPIError } from './error';
 import { Author, Category, FeaturedImage, Post, Tag } from './wordpress.d';
+import { notFound } from 'next/navigation';
 
 const baseUrl = process.env.NEXT_PUBLIC_WORDPRESS_SITE_URL;
 
@@ -16,18 +17,14 @@ const wpFetch = async <T>(url: string): Promise<T> => {
     const response = await fetch(url);
 
     if (!response.ok) {
-        throw new WPAPIError(
-            `WP API request failed: ${response.statusText}`,
-            response.status,
-            url
-        );
+        notFound();
     }
 
     return response.json();
 };
 
 // Construct the full URL for the WordPress API
-const getUrl = (path: string, query?: Record<string, any>) => {
+const getUrl = (path: string, query?: Record<string, unknown>) => {
     const params = query ? querystring.stringify(query) : null;
     return `${baseUrl}${path}${params ? `?${params}` : ''}`;
 };
@@ -38,7 +35,7 @@ const getAllPosts = async (filter: {
     tag?: string;
     search?: string;
 }) => {
-    const query: Record<string, any> = {
+    const query: Record<string, unknown> = {
         _embed: true,
         per_page: 100,
     };

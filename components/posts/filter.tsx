@@ -52,7 +52,11 @@ const Filter = ({
         const param = new URLSearchParams(window.location.search);
         param.delete('page'); // Clear page param on filter change
 
-        value === 'all' ? param.delete(type) : param.set(type, value);
+        if (value === 'all') {
+            param.delete(type);
+        } else {
+            param.set(type, value);
+        }
 
         router.push(`/?${param.toString()}`);
     };

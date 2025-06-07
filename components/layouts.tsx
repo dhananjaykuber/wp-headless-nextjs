@@ -1,9 +1,5 @@
 // Internal dependencies
-import {
-    articleTypographyStyles,
-    baseTypographyStyles,
-    styles,
-} from '@/lib/styles';
+import { articleTypographyStyles, styles } from '@/lib/styles';
 
 // External dependencies
 import { cn } from '@/lib/utils';

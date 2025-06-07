@@ -1,3 +1,6 @@
+// Next.js dependencies
+import { Metadata } from 'next';
+
 // Internal dependencies
 import {
     getAllAuthors,
@@ -19,6 +22,11 @@ import {
     PaginationPrevious,
 } from '@/components/ui/pagination';
 import Search from '@/components/posts/search';
+
+export const metadata: Metadata = {
+    title: 'All Posts',
+    description: 'Browse all posts on our blog',
+};
 
 const Page = async ({
     searchParams,

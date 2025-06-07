@@ -5,6 +5,7 @@ import Link from 'next/link';
 // Internal dependencies
 import { Article, Container, Section } from '@/components/layouts';
 import {
+    getAllPosts,
     getAuthorById,
     getCategoryById,
     getFeaturedImageById,
@@ -14,14 +15,23 @@ import {
 // External dependencies
 import Balancer from 'react-wrap-balancer';
 
+export const generateStaticParams = async () => {
+    // Fetch all posts to generate static paths
+    const posts = await getAllPosts({});
+
+    return posts.map((post) => ({
+        slug: post.slug,
+    }));
+};
+
 const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = await params;
 
     const post = await getPostBySlug(slug);
-    const featuredImage = post.featured_media
+    const featuredImage = post?.featured_media
         ? await getFeaturedImageById(post.featured_media)
         : null;
-    const author = await getAuthorById(post.author);
+    const author = await getAuthorById(post?.author);
     const date = new Date(post.date).toLocaleDateString('en-US', {
         month: 'long',
         day: 'numeric',
