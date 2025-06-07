@@ -1,103 +1,139 @@
-import Image from "next/image";
+// Internal dependencies
+import {
+    getAllAuthors,
+    getAllCategories,
+    getAllPosts,
+    getAllTags,
+} from '@/lib/wordpress';
+import Filter from '@/components/posts/filter';
+import PostCard from '@/components/posts/post-card';
+import { Container, Section } from '@/components/layouts';
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+// External dependencies
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from '@/components/ui/pagination';
+import Search from '@/components/posts/search';
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
-}
+const Page = async ({
+    searchParams,
+}: {
+    searchParams: Promise<{
+        author?: string;
+        category?: string;
+        tag?: string;
+        search?: string;
+        page?: string;
+    }>;
+}) => {
+    const params = await searchParams;
+    const { author, category, tag, search, page: pageParam } = params;
+
+    const [posts, categories, tags, authors] = await Promise.all([
+        getAllPosts({ author, category, tag, search }),
+        getAllCategories(),
+        getAllTags(),
+        getAllAuthors(),
+    ]);
+
+    const page = pageParam ? parseInt(pageParam, 10) : 1;
+    const postsPerPage = 9;
+    const totalPages = Math.ceil(posts.length / postsPerPage);
+    const paginatedPosts = posts.slice(
+        (page - 1) * postsPerPage,
+        page * postsPerPage
+    );
+
+    // Create pagination links
+    const createPaginationLink = (page: number) => {
+        const params = new URLSearchParams();
+        if (page > 1) {
+            params.set('page', page.toString());
+        }
+        if (category) {
+            params.set('category', category);
+        }
+        if (tag) {
+            params.set('tag', tag);
+        }
+        if (author) {
+            params.set('author', author);
+        }
+
+        return `/${params.toString() ? `?${params.toString()}` : ''}`;
+    };
+
+    return (
+        <Section>
+            <Container>
+                <div className='space-y-8'>
+                    <div>
+                        <h1>All Posts</h1>
+                        <p className='my-6 text-gray-500'>
+                            {posts?.length}{' '}
+                            {posts.length === 1 ? 'post' : 'posts'} found
+                            {search && ` for "${search}"`}
+                        </p>
+                    </div>
+
+                    <div className='space-y-4'>
+                        <Search value={search} />
+                        <Filter
+                            categories={categories}
+                            tags={tags}
+                            authors={authors}
+                            selectedCategory={category}
+                            selectedTag={tag}
+                            selectedAuthor={author}
+                        />
+                    </div>
+
+                    {paginatedPosts?.length && (
+                        <div className='grid md:grid-cols-3 gap-4'>
+                            {paginatedPosts.map((post) => (
+                                <PostCard post={post} key={post.id} />
+                            ))}
+                        </div>
+                    )}
+
+                    {totalPages > 1 && (
+                        <Pagination>
+                            <PaginationContent>
+                                <PaginationItem className='before:content-none  mb-0'>
+                                    <PaginationPrevious
+                                        className={
+                                            page <= 1
+                                                ? 'pointer-events-none opacity-50'
+                                                : ''
+                                        }
+                                        href={createPaginationLink(page - 1)}
+                                    ></PaginationPrevious>
+                                </PaginationItem>
+                                <PaginationItem className='before:content-none mb-0'>
+                                    <PaginationLink>{page}</PaginationLink>
+                                </PaginationItem>
+                                <PaginationItem className='before:content-none mb-0'>
+                                    <PaginationNext
+                                        className={
+                                            page >= totalPages
+                                                ? 'pointer-events-none opacity-50'
+                                                : ''
+                                        }
+                                        href={createPaginationLink(page + 1)}
+                                    ></PaginationNext>
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    )}
+                </div>
+            </Container>
+        </Section>
+    );
+};
+
+export default Page;

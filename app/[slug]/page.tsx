@@ -46,7 +46,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
                             {author.name && (
                                 <span>
                                     <Link
-                                        href={`/posts/?author=${author.id}`}
+                                        href={`/?author=${author.id}`}
                                         className='underline'
                                     >
                                         {author.name}
@@ -56,7 +56,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
                         </h5>
 
                         <Link
-                            href={`/posts/?category=${category.id}`}
+                            href={`/?category=${category.id}`}
                             className='border rounded-full text-xs px-2 py-0.5 font-semibold'
                         >
                             {category?.name}

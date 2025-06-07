@@ -54,12 +54,12 @@ const Filter = ({
 
         value === 'all' ? param.delete(type) : param.set(type, value);
 
-        router.push(`/posts?${param.toString()}`);
+        router.push(`/?${param.toString()}`);
     };
 
     // Handle clear filter
     const handleClearFilter = () => {
-        router.push('/posts');
+        router.push('/');
     };
 
     const hasTags = tags.length > 0;

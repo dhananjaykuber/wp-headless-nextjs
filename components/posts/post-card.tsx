@@ -21,7 +21,7 @@ const PostCard = async ({ post }: { post: Post }) => {
 
     return (
         <Link
-            href={`/posts/${post.slug}`}
+            href={`/${post.slug}`}
             className={
                 'border rounded-lg p-4 group flex justify-between flex-col gap-8 hover:bg-accent/50 transition-all'
             }
