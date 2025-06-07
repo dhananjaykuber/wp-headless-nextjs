@@ -69,6 +69,13 @@ const getPostById = async (id: string) => {
     return wpFetch<Post>(url);
 };
 
+// Get a single post by slug
+const getPostBySlug = async (slug: string) => {
+    const url = getUrl(`/wp-json/wp/v2/posts`, { slug });
+    const posts = await wpFetch<Post[]>(url);
+    return posts[0];
+};
+
 // Get all categories
 const getAllCategories = async () => {
     const url = getUrl('/wp-json/wp/v2/categories');
@@ -100,7 +107,7 @@ const getAllAuthors = async () => {
 };
 
 // Get author by ID
-const getAuthorById = async (id: string) => {
+const getAuthorById = async (id: number) => {
     const url = getUrl(`/wp-json/wp/v2/users/${id}`);
     return wpFetch<Author>(url);
 };
@@ -113,6 +120,7 @@ const getFeaturedImageById = async (id: number) => {
 
 export {
     getAllPosts,
+    getPostBySlug,
     getPostById,
     getAllCategories,
     getCategoryById,
