@@ -77,4 +77,31 @@ interface Author {
     meta: Record<string, unknown>;
 }
 
-export { Post, Category, Tag, Author };
+interface MediaSize {
+    file: string;
+    width: number;
+    height: number;
+    mime_type: string;
+    source_url: string;
+}
+
+interface MediaDetails {
+    width: number;
+    height: number;
+    file: string;
+    sizes: Record<string, MediaSize>;
+}
+interface FeaturedImage {
+    title: RenderedTitle;
+    alt_text: string;
+    caption: {
+        rendered: string;
+    };
+    media_type: string;
+    author: number;
+    mime_type: string;
+    media_details: MediaDetails;
+    source_url: string;
+}
+
+export { Post, Category, Tag, Author, FeaturedImage };

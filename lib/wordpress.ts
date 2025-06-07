@@ -3,7 +3,7 @@ import querystring from 'query-string';
 
 // Internal dependencies
 import { WPAPIError } from './error';
-import { Author, Category, Post, Tag } from './wordpress.d';
+import { Author, Category, FeaturedImage, Post, Tag } from './wordpress.d';
 
 const baseUrl = process.env.NEXT_PUBLIC_WORDPRESS_SITE_URL;
 
@@ -43,6 +43,10 @@ const getAllPosts = async (filter: {
         per_page: 100,
     };
 
+    if (filter?.search) {
+        query.search = filter.search;
+    }
+
     if (filter?.author) {
         query.author = filter.author;
     }
@@ -72,7 +76,7 @@ const getAllCategories = async () => {
 };
 
 // Get category by ID
-const getCategoryById = async (id: string) => {
+const getCategoryById = async (id: number) => {
     const url = getUrl(`/wp-json/wp/v2/categories/${id}`);
     return wpFetch<Category>(url);
 };
@@ -84,7 +88,7 @@ const getAllTags = async () => {
 };
 
 // Get tag by ID
-const getTagById = async (id: string) => {
+const getTagById = async (id: number) => {
     const url = getUrl(`/wp-json/wp/v2/tags/${id}`);
     return wpFetch<Tag>(url);
 };
@@ -95,9 +99,16 @@ const getAllAuthors = async () => {
     return wpFetch<Author[]>(url);
 };
 
+// Get author by ID
 const getAuthorById = async (id: string) => {
     const url = getUrl(`/wp-json/wp/v2/users/${id}`);
     return wpFetch<Author>(url);
+};
+
+// Get featured image by ID
+const getFeaturedImageById = async (id: number) => {
+    const url = getUrl(`/wp-json/wp/v2/media/${id}`);
+    return wpFetch<FeaturedImage>(url);
 };
 
 export {
@@ -109,4 +120,5 @@ export {
     getTagById,
     getAllAuthors,
     getAuthorById,
+    getFeaturedImageById,
 };
