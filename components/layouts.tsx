@@ -20,7 +20,7 @@ interface HTMLProps {
 
 const Layout = ({ children, className, id }: LayoutProps) => {
     return (
-        <div className={cn(baseTypographyStyles, className)} id={id}>
+        <div className={cn(styles.typography.base, className)} id={id}>
             {children}
         </div>
     );
