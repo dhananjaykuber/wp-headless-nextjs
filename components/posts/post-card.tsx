@@ -45,12 +45,12 @@ const PostCard = async ({ post }: { post: Post }) => {
                     )}
                 </div>
 
-                <div
+                <h4
                     dangerouslySetInnerHTML={{
                         __html: post.title?.rendered || 'Untitled Post',
                     }}
-                    className='text-xl font-medium group-hover:underline decoration-muted-foreground underline-offset-4 decoration-dotted transition-all'
-                ></div>
+                    className='group-hover:underline decoration-muted-foreground underline-offset-4 decoration-dotted transition-all'
+                ></h4>
                 <div
                     dangerouslySetInnerHTML={{
                         __html: post.excerpt?.rendered
@@ -66,8 +66,8 @@ const PostCard = async ({ post }: { post: Post }) => {
             </div>
 
             <div className='flex justify-between items-center text-xs border-t-1 pt-4'>
-                <p>{category?.name || 'Uncategorized'}</p>
-                <p>{date}</p>
+                <span>{category?.name || 'Uncategorized'}</span>
+                <span>{date}</span>
             </div>
         </Link>
     );

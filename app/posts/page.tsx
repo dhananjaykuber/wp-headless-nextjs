@@ -10,7 +10,6 @@ import PostCard from '@/components/posts/post-card';
 import { Container, Section } from '@/components/layouts';
 
 // External dependencies
-import { Input } from '@/components/ui/input';
 import {
     Pagination,
     PaginationContent,
@@ -19,7 +18,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from '@/components/ui/pagination';
-import Search from '@/components/posts/Search';
+import Search from '@/components/posts/search';
 
 const Page = async ({
     searchParams,
@@ -74,7 +73,7 @@ const Page = async ({
             <Container>
                 <div className='space-y-8'>
                     <div>
-                        <h1 className='text-3xl font-medium'>All Posts</h1>
+                        <h1>All Posts</h1>
                         <p className='my-6 text-gray-500'>
                             {posts?.length}{' '}
                             {posts.length === 1 ? 'post' : 'posts'} found
@@ -105,7 +104,7 @@ const Page = async ({
                     {totalPages > 1 && (
                         <Pagination>
                             <PaginationContent>
-                                <PaginationItem>
+                                <PaginationItem className='before:content-none  mb-0'>
                                     <PaginationPrevious
                                         className={
                                             page <= 1
@@ -115,10 +114,10 @@ const Page = async ({
                                         href={createPaginationLink(page - 1)}
                                     ></PaginationPrevious>
                                 </PaginationItem>
-                                <PaginationItem>
+                                <PaginationItem className='before:content-none mb-0'>
                                     <PaginationLink>{page}</PaginationLink>
                                 </PaginationItem>
-                                <PaginationItem>
+                                <PaginationItem className='before:content-none mb-0'>
                                     <PaginationNext
                                         className={
                                             page >= totalPages
