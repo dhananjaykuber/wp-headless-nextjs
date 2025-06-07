@@ -106,7 +106,7 @@ const Page = async ({
                     {totalPages > 1 && (
                         <Pagination>
                             <PaginationContent>
-                                <PaginationItem className='before:content-none  mb-0'>
+                                <PaginationItem>
                                     <PaginationPrevious
                                         className={
                                             page <= 1
@@ -116,10 +116,10 @@ const Page = async ({
                                         href={createPaginationLink(page - 1)}
                                     ></PaginationPrevious>
                                 </PaginationItem>
-                                <PaginationItem className='before:content-none mb-0'>
+                                <PaginationItem>
                                     <PaginationLink>{page}</PaginationLink>
                                 </PaginationItem>
-                                <PaginationItem className='before:content-none mb-0'>
+                                <PaginationItem>
                                     <PaginationNext
                                         className={
                                             page >= totalPages
